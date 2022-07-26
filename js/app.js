@@ -21,7 +21,7 @@ class Citas {
         // Tomo el arreglo del constructor y le paso una copia de la nueva cita
         this.citas = [...this.citas, cita];
 
-        console.log(this.citas);
+        // console.log(this.citas);
     }
 }
 
@@ -51,6 +51,81 @@ class UI{
             divMensaje.remove();
         }, 5000);
     }
+
+    // Función que imprime el html de las citas haciendo destructuring para
+    // acceder al arreglo de citas, para acceder de forma directa al arreglo
+    imprimirCitas ({citas}){
+        // console.log(citas);
+
+        // Limpiar el html
+        this.limpiarHTML();
+        // Como ya accedi directamente al arreglo, lo recorro con un foreach
+        citas.forEach(cita => {
+            // hago destructuring con las propiedades del array
+            const {mascota, propietario, telefono, fecha, hora, sintomas, id} = cita;
+
+            // Creo div para tener los datos de la cita
+            const divCita = document.createElement('div');
+            // Agrego clases
+            divCita.classList.add('cita', 'p-3');
+            // le pongo un atributo al div
+            divCita.dataset.id = id;
+
+            // Scripting de los elementos de la cita
+            const mascotaParrafo = document.createElement('h2');
+            const propietarioParrafo = document.createElement('p');
+            const telefonoParrafo = document.createElement('p');
+            const fechaParrafo = document.createElement('p');
+            const horaParrafo = document.createElement('p');
+            const sintomasParrafo = document.createElement('p');
+            const idParrafo = document.createElement('p');
+            // Agrego clases a los elementos de las citas
+            mascotaParrafo.classList.add('card-title', 'font-weight-bolder');
+            // Agrego texto a los elementos de la cita
+            mascotaParrafo.textContent = mascota;
+            // Agrego texto con scripting
+            propietarioParrafo.innerHTML = `
+                <span class="font-weight-bolder">Propietario: </span>${propietario}
+            `;
+
+            telefonoParrafo.innerHTML = `
+                <span class="font-weight-bolder">Teléfono: </span>${telefono}
+            `;
+
+            fechaParrafo.innerHTML = `
+                <span class="font-weight-bolder">Fecha: </span>${fecha}
+            `;
+
+            horaParrafo.innerHTML = `
+                <span class="font-weight-bolder">Hora: </span>${hora}
+            `;
+
+            sintomasParrafo.innerHTML = `
+                <span>Sintomas: </span>${sintomas}
+            `;
+
+            // Agrego los elementos de la cita al divCita
+            divCita.appendChild(mascotaParrafo);
+            divCita.appendChild(propietarioParrafo);
+            divCita.appendChild(telefonoParrafo);
+            divCita.appendChild(fechaParrafo);
+            divCita.appendChild(horaParrafo);
+            divCita.appendChild(sintomasParrafo);
+
+            // Agrego el div al HTML en el contenedorCitas
+            contenedorCitas.appendChild(divCita);
+
+        });
+    }
+
+    // Función que permite limpiar el HTML
+    limpiarHTML(){
+        while (contenedorCitas.firstChild) {
+            contenedorCitas.removeChild(contenedorCitas.firstChild);
+        }
+    }
+
+
 }
 
 // INSTANCIO CLASES
@@ -121,6 +196,9 @@ function nuevaCita(e) {
     reiniciarObjetoCita();
     // Reseteo el formulario
     formulario.reset();
+
+    // Mostrar el html de las citas
+    ui.imprimirCitas(administrarCitas);
 }
 
 // Función que permite reiniciar el objeto citaObj
