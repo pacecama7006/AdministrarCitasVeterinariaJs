@@ -23,8 +23,13 @@ class Citas {
 
         // console.log(this.citas);
     }
-}
 
+    eliminarCita(id){
+        // Elimino las citas que son distinas al id, mediante filter
+        this.citas = this.citas.filter( cita => cita.id !== id);
+    }
+}
+// Fin clase citas
 class UI{
     // Función para mandar una alerta
     imprimirAlerta(mensaje, tipo){
@@ -79,8 +84,14 @@ class UI{
             const horaParrafo = document.createElement('p');
             const sintomasParrafo = document.createElement('p');
             const idParrafo = document.createElement('p');
+
+            // Creo botón para eliminar cita
+            const btnEliminar = document.createElement('button');
+            
             // Agrego clases a los elementos de las citas
             mascotaParrafo.classList.add('card-title', 'font-weight-bolder');
+            btnEliminar.classList.add('btn', 'btn-danger', 'mr-2');
+
             // Agrego texto a los elementos de la cita
             mascotaParrafo.textContent = mascota;
             // Agrego texto con scripting
@@ -104,6 +115,8 @@ class UI{
                 <span>Sintomas: </span>${sintomas}
             `;
 
+            btnEliminar.innerHTML = 'Eliminar <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>';
+
             // Agrego los elementos de la cita al divCita
             divCita.appendChild(mascotaParrafo);
             divCita.appendChild(propietarioParrafo);
@@ -111,9 +124,14 @@ class UI{
             divCita.appendChild(fechaParrafo);
             divCita.appendChild(horaParrafo);
             divCita.appendChild(sintomasParrafo);
+            divCita.appendChild(btnEliminar);
 
             // Agrego el div al HTML en el contenedorCitas
             contenedorCitas.appendChild(divCita);
+
+            // Agrego listener al btnEliminar
+            btnEliminar.onclick = ()=> eliminarCita(id);
+
 
         });
     }
@@ -209,4 +227,15 @@ function reiniciarObjetoCita() {
     citaObj.fecha= '';
     citaObj.hora= '';
     citaObj.sintomas= '';
+}
+
+// Función que permite eliminar una cita
+function eliminarCita(id) {
+    // console.log(id);
+    // Elimina la cita
+    administrarCitas.eliminarCita(id);
+    // Muestre mensaje
+    ui.imprimirAlerta('La cita se eliminó correctamente');
+    // Refresque las citas
+    ui.imprimirCitas(administrarCitas);
 }
