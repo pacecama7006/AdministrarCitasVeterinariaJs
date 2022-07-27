@@ -30,6 +30,12 @@ class Citas {
         // Elimino las citas que son distinas al id, mediante filter
         this.citas = this.citas.filter( cita => cita.id !== id);
     }
+
+    editarCitas(citaActualizada){
+        // Genero con map para crear un nuevo arreglo de citas y que me reescriba
+        // el objeto, porque lo estoy editando
+        this.citas = this.citas.map(cita => cita.id === citaActualizada.id ? citaActualizada: cita);
+    }
 }
 // Fin clase citas
 class UI{
@@ -219,8 +225,8 @@ function nuevaCita(e) {
         // Mensaje de editada correctamente
         ui.imprimirAlerta('Cita modificada correctamente');
 
-        // Pasar el objeto de la cita a edición
-
+        // Pasar el objeto de la cita a edición. Le paso una copia del objeto con los {...}
+        administrarCitas.editarCitas({...citaObj})
         // Modifico el texto del botón para crear cita
         formulario.querySelector('button[type="submit"]').textContent = 'Crear cita';
 
