@@ -9,6 +9,8 @@ const sintomasArea = document.querySelector('#sintomas');
 // UI
 const formulario = document.querySelector('#nueva-cita');
 const contenedorCitas = document.querySelector('#citas');
+// Heading
+const heading = document.querySelector('#administra');
 
 let editando;
 
@@ -38,7 +40,11 @@ class Citas {
     }
 }
 // Fin clase citas
+
 class UI{
+    constructor({citas}) {
+        this.textoHeading(citas);
+    }
     // Función para mandar una alerta
     imprimirAlerta(mensaje, tipo){
         // Creo un div
@@ -72,6 +78,9 @@ class UI{
 
         // Limpiar el html
         this.limpiarHTML();
+        // Establezco un encabezado
+        this.textoHeading(citas);
+        
         // Como ya accedi directamente al arreglo, lo recorro con un foreach
         citas.forEach(cita => {
             // hago destructuring con las propiedades del array
@@ -152,6 +161,15 @@ class UI{
         });
     }
 
+    // Agrego un encabezado
+    textoHeading(citas) {
+        if(citas.length > 0 ) {
+            heading.textContent = 'Administra tus Citas '
+        } else {
+            heading.textContent = 'No hay Citas, comienza creando una'
+        }
+    }
+
     // Función que permite limpiar el HTML
     limpiarHTML(){
         while (contenedorCitas.firstChild) {
@@ -164,7 +182,8 @@ class UI{
 
 // INSTANCIO CLASES
 const administrarCitas = new Citas();
-const ui = new UI();
+console.log(administrarCitas);
+const ui = new UI(administrarCitas);
 // Listeners
 eventListeners();
 function eventListeners() {
@@ -244,8 +263,6 @@ function nuevaCita(e) {
         // Mensaje de agregado correctamente
         ui.imprimirAlerta('Cita agregada correctamente');
     }
-
-    
 
     // Reinicio el objeto para nueva validación
     reiniciarObjetoCita();
